@@ -11,7 +11,7 @@ test_that("basic one person likelihood works for inbred person", {
 
   # verify against numerical calculation
   expect_equal(eval(Ryacas::yac_expr(sLikelihood(x)), list(a = 0.5)),
-               edprobr::likelihood(x))
+               pedprobr::likelihood(x))
 
 
   # another inbred pedigree
