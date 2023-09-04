@@ -68,12 +68,34 @@ sLikelihood <- function(x){
     a <- observations[1,1]
     b <- observations[1,2]
 
+    inbreeding_coef <- ribd::inbreeding(x, ids = observed_persons)
+
     if (a==b){
-      return(paste0(a,"^2"))
+      # homozygous case
+      outbred_term <- paste0(a,"^2")
+
+      if (inbreeding_coef == 0){
+        return(outbred_term)
+      }
+      else{
+        inbred_term <- a
+
+        return(paste0(inbreeding_coef,"*", inbred_term, " + ", 1.0 - inbreeding_coef, "*", outbred_term))
+      }
     }
     else{
-      return(paste0("2*", a, "*", b))
+      # heterozygous case
+
+      outbred_term <- paste0("2*", a, "*", b)
+
+      if (inbreeding_coef == 0){
+        return(outbred_term)
+      }
+      else{
+        return(paste0(1.0 - inbreeding_coef, "*", outbred_term))
+      }
     }
+
   }
   else{
     return("1")
